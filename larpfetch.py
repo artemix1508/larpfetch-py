@@ -1,5 +1,5 @@
 import sys
-import json #
+import json #for reading logo ascii arts
 import subprocess #to run commands, needed for detection of software and hardware
 import os
 import rich #to color print statemets
@@ -67,6 +67,8 @@ if isinstance(logo_data, list):
     logo_str = "\n".join(logo_data)
 else:
     logo_str = logo_data
+
+subprocess.run(["clear"])
 
 distro_print = (f"Distribution: {distro_name.capitalize()}")
 rich.print(f"[bold red]Distribution:[/bold red] [green]{distro_name.capitalize()}[/green]")
