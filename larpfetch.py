@@ -49,11 +49,24 @@ def get_distro_info():
                 info[key] = value
     return info
 
+if getattr(sys, '_MEIPASS', None):
+    logos_path = os.path.join(sys._MEIPASS, "logos.json")
+else:
+    logos_path = "logos.json"
+
+with open(logos_path) as f:
+    logos = json.load(f)
 
 distro_info = get_distro_info()
 distro_name = distro_info.get('ID', '').strip('"')
 gpu_info = get_gpu_info()
 cpu_info = get_cpu_info()
+
+logo_data = logos.get(distro_name, "")
+if isinstance(logo_data, list):
+    logo_str = "\n".join(logo_data)
+else:
+    logo_str = logo_data
 
 distro_print = (f"Distribution: {distro_name.capitalize()}")
 rich.print(f"[bold red]Distribution:[/bold red] [green]{distro_name.capitalize()}[/green]")
@@ -68,3 +81,6 @@ for i, gpu in enumerate(gpu_info, start=1):
     gpus_print = f"GPU{i}: {gpu['Vendor']}, {gpu['Model']}"
     rich.print(f"[bold red]GPU{i}:[/bold red] [green]{gpu['Vendor']}[/green], [green]{gpu['Model']}[/green]")
     rich.print(f"[purple]{"-"* (len(gpus_print))}[/purple]")
+
+if logo_str:
+    rich.print(f"[bold cyan]{logo_str}[/bold cyan]\n")
